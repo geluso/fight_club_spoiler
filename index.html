@@ -28,63 +28,71 @@
   </head>
   <body>
     <div id="thing">
-    <h1>what's that song at the end of fight club again?</h1>
-  </div>
+      <h1>what's that song at the end of fight club again?</h1>
+    </div>
 
     <audio id="allstar" src="allstar.mp3"></audio>
     <video id="fightclub" src="ending.mp4" autoplay controls></video>
 
     <script>
-      var volumeOn = () => {
-        fightclub.volume = 1
-        allstar.volume = .5
+      var allStarStart = 10.729783
+      var speak1Start = 22.833128
+      var speak1End = 25.717966
+      fightclub.addEventListener("seeked", handleSeek)
+      fightclub.addEventListener("play", handleSeek)
+      fightclub.addEventListener("pause", handleSeek)
+      
+      function shouldFightClubPlay(t) {
+        isSpeaking = t > speak1Start && t < speak1End
+        return (t < allStarStart || isSpeaking)
       }
-      var volumeOff = () => {
-        fightclub.volume = 0
-        allstar.volume = .8
+        
+      function shouldAllStarPlay(t) {
+        return t > allStarStart
       }
       
-      allstar.volume = .8;
-
-      function setSong(t=0) {
-        var delay = 10.729783
-        if (t < delay) {
-          delay = delay - t;
-          allstar.currentTime = 0;
-          setTimeout(() => {
-            allstar.play()
-            volumeOff()
-          }, delay * 1000);
+      function handleSeek() {
+        t = fightclub.currentTime
+        if (shouldFightClubPlay(t)) {
+          fightVolumeOn();
         } else {
-          allstar.currentTime = t - delay;
-          allstar.play()
+          fightVolumeOff();
+        }
+        
+        if (t < allStarStart) {
+          allstar.currentTime = 0
+          allstar.pause()
+          setTimers(t)
+        } else {
+          allstar.currentTime = t - allStarStart
+          allstar.volume = .8
+          if (fightclub.paused) {
+            allstar.pause()
+          } else {
+            allstar.play()
+          }
         }
       }
-      setSong();
-
-      var speak1Start = 22.833128;
-      var speak1End = 25.717966;
-      setTimeout(volumeOn, speak1Start * 1000);
-      setTimeout(volumeOff, speak1End * 1000);
       
-      first = true;
-      fightclub.addEventListener("play", () => {
-        allstar.play();
-        if (first) {
-          allstar.pause();
-          first = false;
-        }
-      });
+      var playAllStarTimer, speakStartTimer, speakEndTimer;
+      function setTimers(t=0) {
+        clearTimeout(playAllStarTimer)
+        clearTimeout(speakStartTimer)
+        clearTimeout(speakEndTimer)
+        playAllStarTimer = setTimeout(()=> allstar.play(), (allStarStart - t) * 1000);
+        speakStartTimer = setTimeout(()=>{fightVolumeOn(); allstar.volume = .5}, (allStarStart - t) * 1000);
+        speakEndTimer = setTimeout(()=>{fightVolumeOff(); allstar.volume = .8}, (allStarStart - t) * 1000);
+      }
       
-      fightclub.addEventListener("pause", () => {
-        allstar.pause();
-      });
+      function fightVolumeOn() {
+        console.log("fight on")
+        fightclub.volume = 1
+      }
       
-      fightclub.addEventListener("seeked", () => {
-        time = fightclub.currentTime
-        console.log(time);
-        setSong(time)
-      });
+      function fightVolumeOff() {
+        console.log("fight off")
+        fightclub.volume = 0
+      }
     </script>
   </body>
 </html>
