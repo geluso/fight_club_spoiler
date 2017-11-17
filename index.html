@@ -4,11 +4,17 @@
     <meta charset="utf-8">
     <title>Fight Club Ending Spoiler</title>
     <style>
+      @font-face {
+        font-family: fightclub;
+        src: url("fightclub.ttf") format("truetype")
+      }
+    
       body {
-        color: pink;
+        font-family: fightclub;
+        color: #cc6699;
+        background-color: #993366;
         margin: 0;
         padding: 0;
-        background-color: black;
         overflow: hidden;
       }
       
@@ -17,6 +23,8 @@
         position: absolute;
         top: 0;
         width: 100%;
+        font-size: 50pt;
+        margin: 0;
       }
 
       video {
@@ -25,7 +33,7 @@
     </style>
   </head>
   <body>
-    <h1>what's that song at the end of fight club?</h1>
+    <h1>what's that fight club song?</h1>
 
     <audio id="allstar" src="allstar.mp3"></audio>
     <video id="fightclub" src="ending.mp4" autoplay></video>
@@ -90,12 +98,10 @@
       }
       
       function fightVolumeOn() {
-        console.log("fight on")
         fightclub.volume = 1
       }
       
       function fightVolumeOff() {
-        console.log("fight off")
         fightclub.volume = 0
       }
     </script>
