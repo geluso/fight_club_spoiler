@@ -45,6 +45,11 @@
       fightclub.addEventListener("seeked", handleSeek)
       fightclub.addEventListener("play", handleSeek)
       fightclub.addEventListener("pause", handleSeek)
+      fightclub.addEventListener("ended", () => {
+        fightclub.currentTime = 0;
+        fightclub.play();
+        handleSeek()
+      });
       
       function shouldFightClubPlay(t) {
         isSpeaking = t > speak1Start && t < speak1End
