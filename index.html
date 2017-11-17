@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Fight Club Ending Spoiler</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: black;
+      }
+
+      video {
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <audio id="allstar" src="allstar.mp3"></audio>
+    <video id="fightclub" src="ending.mp4" autoplay controls></video>
+
+    <script>
+      var volumeOn = () => fightclub.volume = 1
+      var volumeOff = () => fightclub.volume = 0
+
+      var delay = 10.526644;
+      setTimeout(() => {
+        allstar.play()
+        volumeOff()
+      }, delay * 1000);
+
+      var speak1Start = 22.833128;
+      var speak1End = 25.717966;
+      setTimeout(volumeOn, speak1Start * 1000);
+      setTimeout(volumeOff, speak1End * 1000);
+    </script>
+  </body>
+</html>
