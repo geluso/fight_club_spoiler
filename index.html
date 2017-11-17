@@ -5,17 +5,15 @@
     <title>Fight Club Ending Spoiler</title>
     <style>
       body {
-        color: white;
+        color: pink;
         margin: 0;
         padding: 0;
         background-color: black;
+        overflow: hidden;
       }
       
-      #thing{
-        text-align: center;
-      }
-
       h1 {
+        text-align: center;
         position: absolute;
         top: 0;
         width: 100%;
@@ -27,17 +25,15 @@
     </style>
   </head>
   <body>
-    <div id="thing">
-      <h1>what's that song at the end of fight club again?</h1>
-    </div>
+    <h1>what's that song at the end of fight club?</h1>
 
     <audio id="allstar" src="allstar.mp3"></audio>
-    <video id="fightclub" src="ending.mp4" autoplay controls></video>
+    <video id="fightclub" src="ending.mp4" autoplay></video>
 
     <script>
       var allStarStart = 10.729783
-      var speak1Start = 22.833128
-      var speak1End = 25.717966
+      var speak1Start = 22.933128
+      var speak1End = 25.917966
       fightclub.addEventListener("seeked", handleSeek)
       fightclub.addEventListener("play", handleSeek)
       fightclub.addEventListener("pause", handleSeek)
@@ -79,9 +75,18 @@
         clearTimeout(playAllStarTimer)
         clearTimeout(speakStartTimer)
         clearTimeout(speakEndTimer)
-        playAllStarTimer = setTimeout(()=> allstar.play(), (allStarStart - t) * 1000);
-        speakStartTimer = setTimeout(()=>{fightVolumeOn(); allstar.volume = .5}, (allStarStart - t) * 1000);
-        speakEndTimer = setTimeout(()=>{fightVolumeOff(); allstar.volume = .8}, (allStarStart - t) * 1000);
+        playAllStarTimer = setTimeout(()=> {
+          fightVolumeOff();
+          allstar.play()
+        }, (allStarStart - t) * 1000);
+        speakStartTimer = setTimeout(()=>{
+          fightVolumeOn();
+          allstar.volume = .5
+        }, (speak1Start - t) * 1000);
+        speakEndTimer = setTimeout(()=>{
+          fightVolumeOff();
+          allstar.volume = .8
+        }, (speak1End - t) * 1000);
       }
       
       function fightVolumeOn() {
