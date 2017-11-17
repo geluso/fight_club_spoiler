@@ -5,9 +5,20 @@
     <title>Fight Club Ending Spoiler</title>
     <style>
       body {
+        color: white;
         margin: 0;
         padding: 0;
         background-color: black;
+      }
+      
+      #thing{
+        text-align: center;
+      }
+
+      h1 {
+        position: absolute;
+        top: 0;
+        width: 100%;
       }
 
       video {
@@ -16,23 +27,64 @@
     </style>
   </head>
   <body>
+    <div id="thing">
+    <h1>what's that song at the end of fight club again?</h1>
+  </div>
+
     <audio id="allstar" src="allstar.mp3"></audio>
     <video id="fightclub" src="ending.mp4" autoplay controls></video>
 
     <script>
-      var volumeOn = () => fightclub.volume = 1
-      var volumeOff = () => fightclub.volume = 0
+      var volumeOn = () => {
+        fightclub.volume = 1
+        allstar.volume = .5
+      }
+      var volumeOff = () => {
+        fightclub.volume = 0
+        allstar.volume = .8
+      }
+      
+      allstar.volume = .8;
 
-      var delay = 10.526644;
-      setTimeout(() => {
-        allstar.play()
-        volumeOff()
-      }, delay * 1000);
+      function setSong(t=0) {
+        var delay = 10.729783
+        if (t < delay) {
+          delay = delay - t;
+          allstar.currentTime = 0;
+          setTimeout(() => {
+            allstar.play()
+            volumeOff()
+          }, delay * 1000);
+        } else {
+          allstar.currentTime = t - delay;
+          allstar.play()
+        }
+      }
+      setSong();
 
       var speak1Start = 22.833128;
       var speak1End = 25.717966;
       setTimeout(volumeOn, speak1Start * 1000);
       setTimeout(volumeOff, speak1End * 1000);
+      
+      first = true;
+      fightclub.addEventListener("play", () => {
+        allstar.play();
+        if (first) {
+          allstar.pause();
+          first = false;
+        }
+      });
+      
+      fightclub.addEventListener("pause", () => {
+        allstar.pause();
+      });
+      
+      fightclub.addEventListener("seeked", () => {
+        time = fightclub.currentTime
+        console.log(time);
+        setSong(time)
+      });
     </script>
   </body>
 </html>
